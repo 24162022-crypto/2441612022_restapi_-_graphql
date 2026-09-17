@@ -1,0 +1,120 @@
+# ============================================================
+# File: src/main/resources/graphql/schema.graphqls
+# Schema GraphQL cho Category va Product - WEBPR330479
+#
+# GHI CHU VE KIEU NGAY THANG:
+# GraphQL khong co scalar Date san. O day dung String cho don gian
+# (server tra ve chuoi ISO-8601). Neu muon co scalar Date that su thi them
+# thu vien graphql-java-extended-scalars vao pom.xml:
+#
+#   <dependency>
+#     <groupId>com.graphql-java</groupId>
+#     <artifactId>graphql-java-extended-scalars</artifactId>
+#     <version>21.0</version>
+#   </dependency>
+#
+# roi khai bao bean:
+#   @Bean
+#   public RuntimeWiringConfigurer runtimeWiringConfigurer() {
+#       return wiringBuilder -> wiringBuilder.scalar(ExtendedScalars.DateTime);
+#   }
+# va doi "createDate: String" thanh "createDate: DateTime", them dong
+# "scalar DateTime" o dau file nay.
+# ============================================================
+
+type Category {
+    categoryId: ID!
+    categoryName: String!
+    icon: String
+    # Danh sach san pham thuoc danh muc - duoc giai quyet boi @SchemaMapping
+    products: [Product]
+}
+
+type Product {
+    productId: ID!
+    productName: String!
+    quantity: Int!
+    unitPrice: Float!
+    images: String
+    description: String
+    discount: Float!
+    createDate: String
+    status: Int!
+    # Danh muc cua san pham - duoc giai quyet boi @SchemaMapping
+    category: Category
+}
+
+# Kieu tra ve cho truy van co phan trang
+type ProductPage {
+    content: [Product]
+    totalPages: Int
+    totalElements: Int
+    currentPage: Int
+}
+
+type CategoryPage {
+    content: [Category]
+    totalPages: Int
+    totalElements: Int
+    currentPage: Int
+}
+
+# Ket qua tra ve cho cac thao tac xoa
+type DeleteResult {
+    status: Boolean!
+    message: String
+}
+
+# ============ INPUT ============
+
+input ProductInput {
+    productName: String!
+    quantity: Int!
+    unitPrice: Float!
+    # Ten file anh lay tu REST endpoint /api/upload
+    images: String
+    description: String!
+    discount: Float!
+    status: Int!
+    categoryId: ID!
+}
+
+input CategoryInput {
+    categoryName: String!
+    icon: String
+}
+
+# ============ QUERY ============
+
+type Query {
+    # Tat ca san pham sap xep theo gia tang dan
+    allProductsSortedByPrice: [Product]
+
+    # San pham theo danh muc
+    productsByCategory(categoryId: ID!): [Product]
+
+    # Tim kiem san pham co phan trang
+    searchProducts(keyword: String, page: Int, size: Int): ProductPage
+
+    # Tat ca danh muc
+    allCategories: [Category]
+
+    # Tim kiem danh muc co phan trang
+    searchCategories(keyword: String, page: Int, size: Int): CategoryPage
+
+    # Lay 1 ban ghi theo id
+    productById(id: ID!): Product
+    categoryById(id: ID!): Category
+}
+
+# ============ MUTATION ============
+
+type Mutation {
+    createProduct(input: ProductInput!): Product
+    updateProduct(id: ID!, input: ProductInput!): Product
+    deleteProduct(id: ID!): DeleteResult
+
+    createCategory(input: CategoryInput!): Category
+    updateCategory(id: ID!, input: CategoryInput!): Category
+    deleteCategory(id: ID!): DeleteResult
+}

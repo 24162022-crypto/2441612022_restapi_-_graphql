@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- File: src/main/resources/templates/home.html -->
+<head th:replace="~{layout :: head-common}"></head>
+<title>Trang chu</title>
+<body>
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<div class="container">
+    <div id="homeAlert" class="alert alert-danger d-none"></div>
+
+    <!-- SECTION 1: tat ca san pham sap xep gia tang dan -->
+    <h4 class="mb-3">Tất cả sản phẩm (giá tăng dần)</h4>
+    <div class="row" id="allProductsArea"></div>
+
+    <hr class="my-4">
+
+    <!-- SECTION 2: loc san pham theo danh muc -->
+    <h4 class="mb-3">Sản phẩm theo danh mục</h4>
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <select class="form-select" id="homeCategorySelect">
+                <option value="">-- Chọn danh mục --</option>
+            </select>
+        </div>
+    </div>
+    <div class="row" id="categoryProductsArea"></div>
+</div>
+
+<th:block th:replace="~{layout :: scripts-common}"></th:block>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- File: src/main/resources/templates/category-manage.html -->
+<head th:replace="~{layout :: head-common}"></head>
+<title>Quan ly danh muc (GraphQL)</title>
+<body>
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>Quản lý danh mục</h3>
+        <button class="btn btn-primary" id="btnOpenAddCategory">+ Thêm danh mục</button>
+    </div>
+
+    <div class="row g-2 mb-3">
+        <div class="col-md-6">
+            <input type="text" class="form-control" id="categoryKeyword" placeholder="Tìm theo tên danh mục...">
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-outline-primary w-100" id="btnSearchCategory">Tìm kiếm</button>
+        </div>
+    </div>
+
+    <div id="categoryAlert" class="alert d-none"></div>
+
+    <table class="table table-bordered table-hover align-middle">
+        <thead class="table-light">
+        <tr>
+            <th style="width:80px">ID</th>
+            <th>Tên danh mục</th>
+            <th style="width:120px">Icon</th>
+            <th style="width:180px">Thao tác</th>
+        </tr>
+        </thead>
+        <tbody id="categoryTableBody"></tbody>
+    </table>
+
+    <nav><ul class="pagination" id="categoryPagination"></ul></nav>
+</div>
+
+<div class="modal fade" id="categoryModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="categoryModalTitle">Thêm danh mục</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="categoryId">
+                <input type="hidden" id="categoryIconName">
+                <div class="mb-3">
+                    <label class="form-label">Tên danh mục</label>
+                    <input type="text" class="form-control" id="categoryName">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Icon</label>
+                    <input type="file" class="form-control" id="categoryIcon" accept="image/*">
+                    <div class="form-text">Ảnh được upload qua REST /api/upload rồi tên file mới được gửi vào mutation.</div>
+                </div>
+                <div id="categoryModalError" class="text-danger"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" id="btnSaveCategory">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block th:replace="~{layout :: scripts-common}"></th:block>
+</body>
+</html>
