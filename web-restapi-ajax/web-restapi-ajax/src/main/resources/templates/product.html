@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- File: src/main/resources/templates/product.html -->
+<head th:replace="~{layout :: head-common}"></head>
+<title>Quan ly san pham</title>
+<body>
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>Quản lý sản phẩm</h3>
+        <button class="btn btn-primary" id="btnOpenAddProduct">+ Thêm sản phẩm</button>
+    </div>
+
+    <!-- O tim kiem -->
+    <div class="row g-2 mb-3">
+        <div class="col-md-6">
+            <input type="text" class="form-control" id="productKeyword"
+                   placeholder="Nhập tên sản phẩm cần tìm...">
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-outline-primary w-100" id="btnSearchProduct">Tìm kiếm</button>
+        </div>
+        <div class="col-md-2">
+            <select class="form-select" id="productPageSize">
+                <option value="5" selected>5 / trang</option>
+                <option value="10">10 / trang</option>
+                <option value="20">20 / trang</option>
+            </select>
+        </div>
+    </div>
+
+    <div id="productAlert" class="alert d-none" role="alert"></div>
+
+    <table class="table table-bordered table-hover align-middle">
+        <thead class="table-light">
+        <tr>
+            <th style="width:60px">ID</th>
+            <th style="width:90px">Ảnh</th>
+            <th>Tên sản phẩm</th>
+            <th style="width:110px">Đơn giá</th>
+            <th style="width:80px">SL</th>
+            <th style="width:90px">Giảm giá</th>
+            <th style="width:130px">Danh mục</th>
+            <th style="width:100px">Trạng thái</th>
+            <th style="width:160px">Thao tác</th>
+        </tr>
+        </thead>
+        <tbody id="productTableBody"></tbody>
+    </table>
+
+    <!-- Phan trang render bang AJAX -->
+    <nav>
+        <ul class="pagination" id="productPagination"></ul>
+    </nav>
+</div>
+
+<!-- Modal them / sua san pham -->
+<div class="modal fade" id="productModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="productModalTitle">Thêm sản phẩm</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="productId">
+                <div class="row g-3">
+                    <div class="col-md-8">
+                        <label class="form-label">Tên sản phẩm</label>
+                        <input type="text" class="form-control" id="productName">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Danh mục</label>
+                        <!-- Danh sach category duoc load bang AJAX -->
+                        <select class="form-select" id="productCategoryId"></select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Đơn giá</label>
+                        <input type="number" step="1000" class="form-control" id="productUnitPrice" value="0">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Số lượng</label>
+                        <input type="number" class="form-control" id="productQuantity" value="0">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Giảm giá (%)</label>
+                        <input type="number" step="0.1" class="form-control" id="productDiscount" value="0">
+                    </div>
+                    <div class="col-md-12">
+                        <label class="form-label">Mô tả</label>
+                        <textarea class="form-control" id="productDescription" rows="2"></textarea>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Ảnh sản phẩm</label>
+                        <input type="file" class="form-control" id="productImageFile" accept="image/*">
+                        <div class="form-text">Để trống nếu không muốn đổi ảnh.</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Trạng thái</label>
+                        <select class="form-select" id="productStatus">
+                            <option value="1" selected>Đang bán</option>
+                            <option value="0">Ngừng bán</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="productModalError" class="text-danger mt-2"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" id="btnSaveProduct">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block th:replace="~{layout :: scripts-common}"></th:block>
+</body>
+</html>
